@@ -49,7 +49,7 @@ const generateImage = async (member, server) => {
     ctx.closePath();
     ctx.clip();
 
-    // draw the avatar image
+    // draw the avatar imagee
     ctx.drawImage(avimg, av.x, av.y)
     ctx.restore()
 
