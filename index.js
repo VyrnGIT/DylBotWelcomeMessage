@@ -10,7 +10,10 @@ const client = new Client({
 		GatewayIntentBits.MessageContent,
 		GatewayIntentBits.GuildMembers,
     ],
-   partials: [Partials.Channel] });
+    partials: [Partials.Channel]
+});
+
+const welcomeChannelId = "1131380261158912141"; // Replace with your actual channel ID
 
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`)
@@ -24,12 +27,15 @@ client.on("messageCreate", (message) => {
 
 client.on("guildMemberAdd", async (member) => {
     const img = await generateImage(member, member.guild);
-    member.guild.channels.cache.get(welcomeChannelId).send({
-      content: `Welcome <@${member.id}> to Dyl's Den!`,
-      files: [img],
-    });
-  });
+    const welcomeChannel = member.guild.channels.cache.get(welcomeChannelId);
+    if (welcomeChannel) {
+        welcomeChannel.send({
+            content: `Welcome <@${member.id}> to Dyl's Den!`,
+            files: [img],
+        });
+    } else {
+        console.error(`Welcome channel with ID ${welcomeChannelId} not found.`);
+    }
+});
 
-const welcomeChannelId = "1131380261158912141"
-
-client.login(process.env.TOKEN)
+client.login(process.env.TOKEN);
